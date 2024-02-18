@@ -1,0 +1,36 @@
+name: CICD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build Project
+        run: ./gradlew clean build
+      - name: Login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: docker build -t iamakx/storyteller-api .
+      - name: Publish image to docker hub
+        run: docker push iamakx/storyteller-api:latest
+
+  deploy:
+    needs: build
+    runs-on: [aws-ec2]
+    steps:
+      - name: Pull Image from docker hub
+        run: docker pull iamakx/storyteller-api:latest
+      - name: Delete old container
+        run: docker rm -f storyteller-api
+      - name: Run docker container
+        run: docker run -d -p 8080:8080 --name storyteller-api iamakx/storyteller-api
