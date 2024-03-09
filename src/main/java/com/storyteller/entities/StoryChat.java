@@ -23,8 +23,10 @@ public class StoryChat {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "story_id")
     private Story story;
+
+    private long serialNumber;
 
     private String text;
 

@@ -19,12 +19,14 @@ public class Story {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "author_id")
     private Author author;
+
+    private String name;
 
     private String image;
 
