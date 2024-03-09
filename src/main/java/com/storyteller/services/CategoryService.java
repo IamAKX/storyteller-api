@@ -5,10 +5,10 @@ import com.storyteller.entities.Category;
 import com.storyteller.exceptions.EntityValidationException;
 import com.storyteller.repositories.CategoryRepository;
 import com.storyteller.utilities.ServiceHelper;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class CategoryService {
     }
 
     public ResponseData getCategoryById(Long id) {
-        Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return ResponseData.builder()
                 .message("Category found")
                 .statusCode(HttpStatus.OK.value())
@@ -48,7 +48,7 @@ public class CategoryService {
     }
 
     public ResponseData getCategoryByName(String name) {
-        Category existingCategory = categoryRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Category existingCategory = categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return ResponseData.builder()
                 .message("Category found")
                 .statusCode(HttpStatus.OK.value())
@@ -57,7 +57,7 @@ public class CategoryService {
     }
 
     public ResponseData updateCategory(Long id, Category updatedCategory){
-        Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        Category existingCategory = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         BeanUtils.copyProperties(updatedCategory, existingCategory, ServiceHelper.getNullPropertyNames(updatedCategory));
         Category insertedCategory = categoryRepository.save(existingCategory);
         return ResponseData.builder()

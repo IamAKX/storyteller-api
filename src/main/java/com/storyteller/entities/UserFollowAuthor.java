@@ -19,10 +19,10 @@ public class UserFollowAuthor {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "author_id")
     private Author author;
 }

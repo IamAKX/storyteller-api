@@ -50,7 +50,7 @@ public class User {
     private SubscribtionStatus subscribtionStatus = SubscribtionStatus.NOT_SUBSCRIBED;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "subscription_id")
     private Subscription subscription;
 
     private String bio;

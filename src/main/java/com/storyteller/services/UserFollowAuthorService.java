@@ -8,9 +8,9 @@ import com.storyteller.exceptions.EntityValidationException;
 import com.storyteller.repositories.AuthorRepository;
 import com.storyteller.repositories.UserFollowAuthorRepository;
 import com.storyteller.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +36,8 @@ public class UserFollowAuthorService {
             throw new EntityValidationException("UserFollowAuthor", "User already follow this author");
         }
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        Author author = authorRepository.findById(authorId).orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        Author author = authorRepository.findById(authorId).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
 
         UserFollowAuthor userFollowAuthor = new UserFollowAuthor();
         userFollowAuthor.setUser(user);
@@ -64,7 +64,7 @@ public class UserFollowAuthorService {
                     .statusCode(HttpStatus.OK.value())
                     .build();
         } else {
-            throw new EntityValidationException("UserFollowAuthor", "User already follow this author");
+            throw new ResourceNotFoundException("User does not follow this author");
         }
     }
 

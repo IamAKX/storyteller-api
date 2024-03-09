@@ -5,10 +5,10 @@ import com.storyteller.entities.User;
 import com.storyteller.exceptions.EntityValidationException;
 import com.storyteller.repositories.UserRepository;
 import com.storyteller.utilities.ServiceHelper;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public ResponseData getUserById(Long id) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return ResponseData.builder()
                 .message("User found")
                 .statusCode(HttpStatus.OK.value())
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public ResponseData getUserByMobileNumber(String mobile) {
-        User existingUser = userRepository.findByMobile(mobile).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User existingUser = userRepository.findByMobile(mobile).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return ResponseData.builder()
                 .message("User found")
                 .statusCode(HttpStatus.OK.value())
@@ -58,7 +58,7 @@ public class UserService {
     }
 
     public ResponseData updateUser(Long id, User updatedUser){
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         BeanUtils.copyProperties(updatedUser, existingUser, ServiceHelper.getNullPropertyNames(updatedUser));
         User insertedUser = userRepository.save(existingUser);
         return ResponseData.builder()

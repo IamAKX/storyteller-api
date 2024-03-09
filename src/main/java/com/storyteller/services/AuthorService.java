@@ -5,10 +5,10 @@ import com.storyteller.entities.Author;
 import com.storyteller.exceptions.EntityValidationException;
 import com.storyteller.repositories.AuthorRepository;
 import com.storyteller.utilities.ServiceHelper;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class AuthorService {
     }
 
     public ResponseData getAuthorById(Long id) {
-        Author existingAuthor = authorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        Author existingAuthor = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
         return ResponseData.builder()
                 .message("Author found")
                 .statusCode(HttpStatus.OK.value())
@@ -50,7 +50,7 @@ public class AuthorService {
     }
 
     public ResponseData getAuthorByName(String name) {
-        Author existingAuthor = authorRepository.findByName(name).orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        List<Author> existingAuthor = authorRepository.findByNameContaining(name);
         return ResponseData.builder()
                 .message("Author found")
                 .statusCode(HttpStatus.OK.value())
@@ -59,7 +59,7 @@ public class AuthorService {
     }
 
     public ResponseData updateAuthor(Long id, Author updatedAuthor){
-        Author existingAuthor = authorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Author not found"));
+        Author existingAuthor = authorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Author not found"));
         BeanUtils.copyProperties(updatedAuthor, existingAuthor, ServiceHelper.getNullPropertyNames(updatedAuthor));
         Author insertedAuthor = authorRepository.save(existingAuthor);
         return ResponseData.builder()
