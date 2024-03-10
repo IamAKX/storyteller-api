@@ -79,4 +79,18 @@ public class ServiceHelper {
         }
         return nullPropertyNames.toArray(new String[0]);
     }
+
+    public static String[] getNullPropertyNames(StoryChat story) {
+        BeanWrapper beanWrapper = new BeanWrapperImpl(story);
+        List<String> nullPropertyNames = new ArrayList<>();
+        for (PropertyDescriptor propertyDescriptor : beanWrapper.getPropertyDescriptors()) {
+            String propertyName = propertyDescriptor.getName();
+            Object propertyValue = beanWrapper.getPropertyValue(propertyName);
+            // Exclude properties with numeric types from being considered for updating
+            if (propertyValue == null || (propertyValue instanceof String && ((String) propertyValue).isEmpty())|| (long.class.isAssignableFrom(propertyDescriptor.getPropertyType()))) {
+                nullPropertyNames.add(propertyName);
+            }
+        }
+        return nullPropertyNames.toArray(new String[0]);
+    }
 }
