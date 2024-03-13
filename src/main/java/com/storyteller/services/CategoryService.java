@@ -48,7 +48,7 @@ public class CategoryService {
     }
 
     public ResponseData getCategoryByName(String name) {
-        Category existingCategory = categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        List<Category> existingCategory = categoryRepository.findByNameContaining(name);
         return ResponseData.builder()
                 .message("Category found")
                 .statusCode(HttpStatus.OK.value())
