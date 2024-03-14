@@ -59,7 +59,7 @@ public class ServiceHelper {
             String propertyName = propertyDescriptor.getName();
             Object propertyValue = beanWrapper.getPropertyValue(propertyName);
             // Exclude properties with numeric types from being considered for updating
-            if (propertyValue == null || (propertyValue instanceof String && ((String) propertyValue).isEmpty())|| (propertyName.equals("id"))) {
+            if (propertyValue == null ||  (propertyName.equals("id"))) {
                 nullPropertyNames.add(propertyName);
             }
         }
