@@ -33,4 +33,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f storyteller-api
       - name: Run docker container
-        run: docker run -d -p 80:80 --name storyteller-api iamakx/storyteller-api
+        run: docker run -d -p 8080:8080 --name storyteller-api iamakx/storyteller-api
