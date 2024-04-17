@@ -3,8 +3,10 @@ package com.storyteller.services;
 import com.storyteller.dto.ResponseData;
 import com.storyteller.entities.Story;
 import com.storyteller.exceptions.EntityValidationException;
+import com.storyteller.repositories.StoryChatRepository;
 import com.storyteller.repositories.StoryRepository;
 import com.storyteller.utilities.ServiceHelper;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class StoryService {
 
     @Autowired
     private StoryRepository storyRepository;
+
+    @Autowired
+    private StoryChatRepository storyChatRepository;
 
     public ResponseData saveStory(Story story) {
         try {
@@ -71,10 +76,11 @@ public class StoryService {
                 .data(insertedStory)
                 .build();
     }
-
+    @Transactional
     public ResponseData deleteStory(Long id){
+        storyChatRepository.deleteByStoryId(id);
         storyRepository.deleteById(id);
-        // TODO : Delete from story_chat as well
+
         return ResponseData.builder()
                 .message("Story deleted successfully")
                 .statusCode(HttpStatus.OK.value())

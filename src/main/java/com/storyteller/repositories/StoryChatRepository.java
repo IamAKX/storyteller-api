@@ -18,4 +18,6 @@ public interface StoryChatRepository extends JpaRepository<StoryChat, Long> {
     @Query("SELECT MAX(s.serialNumber) FROM StoryChat s WHERE s.story.id = :storyId")
     Optional<Long> findMaxSerialNumberByStoryId(Long storyId);
 
+    void deleteByStoryId(Long storyId);
+
 }
