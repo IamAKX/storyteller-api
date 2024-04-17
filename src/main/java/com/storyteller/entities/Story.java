@@ -30,5 +30,9 @@ public class Story {
 
     private String image;
 
+    private String userMe;
+
+    private String userOther;
+
     private String tags;
 }
