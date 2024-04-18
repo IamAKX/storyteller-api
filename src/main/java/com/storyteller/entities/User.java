@@ -55,6 +55,8 @@ public class User {
 
     private String bio;
 
+    private String firebaseAuthId;
+
     private Date createdOn;
 
     private Date updatedOn;
