@@ -48,6 +48,15 @@ public class UserService {
                 .build();
     }
 
+    public ResponseData getUserByFirebaseAuthId(String id) {
+        User existingUser = userRepository.findByFirebaseAuthId(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return ResponseData.builder()
+                .message("User found")
+                .statusCode(HttpStatus.OK.value())
+                .data(existingUser)
+                .build();
+    }
+
     public ResponseData getUserByMobileNumber(String mobile) {
         User existingUser = userRepository.findByMobile(mobile).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return ResponseData.builder()

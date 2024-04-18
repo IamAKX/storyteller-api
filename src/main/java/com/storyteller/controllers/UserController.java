@@ -26,6 +26,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = { "/firebaseAuthId/{id}" })
+    private ResponseEntity<ResponseData> getUserByfirebaseAuthId(@PathVariable String id){
+        return new ResponseEntity<>(userService.getUserByFirebaseAuthId(id), HttpStatus.OK);
+    }
+
     @GetMapping(value = { "/mobile/{mobile}" })
     private ResponseEntity<ResponseData> getUserByMobileNumber(@PathVariable String mobile){
         return new ResponseEntity<>(userService.getUserByMobileNumber(mobile), HttpStatus.OK);

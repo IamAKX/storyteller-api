@@ -13,6 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByMobile(String mobile);
 
     Optional<User> findById(Long id);
+    Optional<User> findByFirebaseAuthId(String id);
 
     List<User> findAll();
 
