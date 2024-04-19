@@ -1,8 +1,10 @@
 package com.storyteller.services;
 
 import com.storyteller.dto.ResponseData;
+import com.storyteller.entities.Author;
 import com.storyteller.entities.Story;
 import com.storyteller.exceptions.EntityValidationException;
+import com.storyteller.repositories.AuthorRepository;
 import com.storyteller.repositories.StoryChatRepository;
 import com.storyteller.repositories.StoryRepository;
 import com.storyteller.utilities.ServiceHelper;
@@ -24,6 +26,9 @@ public class StoryService {
 
     @Autowired
     private StoryChatRepository storyChatRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     public ResponseData saveStory(Story story) {
         try {
@@ -49,6 +54,18 @@ public class StoryService {
 
     public ResponseData getStoryByName(String name) {
         List<Story> existingStory = storyRepository.findByNameContaining(name);
+        return ResponseData.builder()
+                .message("Story found")
+                .statusCode(HttpStatus.OK.value())
+                .data(existingStory)
+                .build();
+    }
+
+    public ResponseData getStoryByAuthor(String name) {
+        List<Author> authors = authorRepository.findByNameContaining(name);
+        List<Story> existingStory = storyRepository.findAll();
+        List<Long> authorIds = authors.stream().map(Author::getId).toList();
+        existingStory = existingStory.stream().filter(s -> authorIds.contains(s.getAuthor().getId())).toList();
         return ResponseData.builder()
                 .message("Story found")
                 .statusCode(HttpStatus.OK.value())

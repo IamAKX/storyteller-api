@@ -31,6 +31,11 @@ public class StoryController {
         return new ResponseEntity<>(storyService.getStoryByName(name), HttpStatus.OK);
     }
 
+    @GetMapping(value = { "/author/{name}" })
+    private ResponseEntity<ResponseData> getStoryByAuthor(@PathVariable String name){
+        return new ResponseEntity<>(storyService.getStoryByAuthor(name), HttpStatus.OK);
+    }
+
     @GetMapping(value = { "/tag/{tag}" })
     private ResponseEntity<ResponseData> getStoryByTag(@PathVariable String tag){
         return new ResponseEntity<>(storyService.getStoryByTags(tag), HttpStatus.OK);
